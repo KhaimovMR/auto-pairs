@@ -11,6 +11,7 @@ if exists('g:AutoPairsLoaded') || &cp
   finish
 end
 let g:AutoPairsLoaded = 1
+let g:AutoPairsSingleSpaceFileTypes = ["markdown"]
 
 if !exists('g:AutoPairs')
   let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '```':'```', '"""':'"""', "'''":"'''", "`":"`"}
@@ -432,7 +433,7 @@ func! AutoPairsSpace()
       continue
     end
     if before =~ '\V'.open.'\v$' && after =~ '^\V'.close
-      if close =~ '\v^[''"`]$'
+      if close =~ '\v^[''"`]$' || index(g:AutoPairsSingleSpaceFileTypes, &filetype) > -1
         return "\<SPACE>"
       else
         return "\<SPACE>\<SPACE>".s:Left
