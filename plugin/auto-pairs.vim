@@ -205,6 +205,10 @@ func! AutoPairsInsert(key)
 
   let [before, after, afterline] = s:getline()
 
+  if afterline =~ '\w'
+    return a:key
+  end
+
   " Ignore auto close if prev character is \
   if before[-1:-1] == '\'
     return a:key
