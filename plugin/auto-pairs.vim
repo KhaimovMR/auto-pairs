@@ -205,7 +205,7 @@ func! AutoPairsInsert(key)
 
   let [before, after, afterline] = s:getline()
 
-  if afterline =~ '\w'
+  if afterline !~ "^['\"]" && (before =~ '[^ \[\{\("' . "'" . ']$' || afterline =~ '^[^ \]\}\)"' . "'" . ']')
     return a:key
   end
 
@@ -259,6 +259,11 @@ func! AutoPairsInsert(key)
           end
         end
       endwhile
+
+      if a:key =~ "['\"]" && s:check_key_count(a:key, before)
+        return a:key
+      end
+
       return bs.del.openPair.close.s:left(close)
     end
   endfor
@@ -304,6 +309,14 @@ func! AutoPairsInsert(key)
 
   return a:key
 endf
+
+
+func! s:check_key_count(key, before)
+  let l:clean_before = join(split(a:before, '\\' . a:key), " ")
+  let l:matches_count = len(split(l:clean_before, a:key, 1)) - 1
+  return l:matches_count % 2
+endf
+
 
 func! AutoPairsDelete()
   if !b:autopairs_enabled
