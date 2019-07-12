@@ -205,7 +205,7 @@ func! AutoPairsInsert(key)
 
   let [before, after, afterline] = s:getline()
 
-  if afterline !~ "^['\"]" && (before =~ '[^ \[\{\("' . "'" . ']$' || afterline =~ '^[^ \]\}\)"' . "'" . ']')
+  if a:key !~ '[\{\[\(]' && afterline !~ '^['."'".'\"\]\}\)]' && (before =~ '[^ \[{\("' . "'" . ']$' || afterline =~ '^[^ \]\}\)"' . "'" . ']')
     return a:key
   end
 
